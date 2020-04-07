@@ -1,0 +1,203 @@
+---
+title: "2020_04_07_RMarkdown"
+author: "yksoon"
+date: '2020 4 7 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# 제목1
+## 제목2
+### 제목3
+#### 제목4
+##### 제목5
+###### 제목6
+
+제목7
+=====
+
+제목8
+-----
+
+일반쓰기
+
+* 순서 없는 글머리 기호1 with *표
+
+* 순서 없는 글머리 기호2 with *표
+
+  + 순서 없는 글머리기호3 with +표 and 들여쓰기
+
+  - 순서 없는 글머리기호4 with -표 and 들여쓰기
+
+1. 순서 있는 글머리기호1
+
+2) 순서 있는 글머리기호2
+
+  A. 순서 있는 글머리기호3 with 들여쓰기
+  
+  B) 순서 있는 글머리기호4 with 들여쓰기
+  
+  C) 순서 있는 글머리기호3 with 들여쓰기
+  
+  현재 수준에서 공백 4개 입력하면 들여쓰기만 처리됨
+
+
+네이버 연결1 (http://www.naver.com)
+
+[네이버 연결2](http://www.naver.com)
+
+이미지 삽입
+
+![홈페이지에서 불러온 이미지](http://blogfiles.naver.net/MjAxODAxMTJfMjY2/MDAxNTE1NzUyMDM2NzUy.uTIGLqrrVDI_J1TQj5vYh7vE-eXpExQ7FPAF02RzJ90g.lIaPBt077H4YB7QkkJWzdtSXDMBC1an0mB28cR4w4AEg.GIF.dndb018/2.gif)
+
+
+<!-- 주석 처리 -->
+위의 '주석 처리'는 보이지 않음
+
+
+디스플레이 수식
+
+$$ y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n} $$
+
+인라인 수식
+
+문장 안에서도 $y_{i} = \sqrt[3]{x_{i}} + \sum_{1}^{n}$ 와 같이 수식 입력 가능
+
+줄바꾸기 
+
+줄을 바꾸려면,  
+뒤에 공백 두개
+
+수평선 그리기
+
+***
+
+_________________
+
+구 분 | 내 용
+- | -
+이름 | deinitice
+나이 | 39
+졸업연도 | 2006
+입사연도 | 2006
+부서명 | Management
+소속본부 | HQ
+
+
+R Code 를 
+```{r 청크명}``` 
+사이에 넣으면 된다.
+이 때  
+```{r 청크명, 청크옵션 1, 청크옵션 2...}```
+는 줄을 달리 해야 하며,  
+청크명과 청크 옵션들은 기재하지 않아도 된다.  
+즉, 그냥 ```{r} 로만 시작해도 된다는 것.  
+
+- 여기서 `는 백틱 기호이며,  
+키보드 왼쪽 위의 ESC 버튼 아래에 물결무늬(~)와 같이 있다.  
+- R Markdown 문서에서 직접 입력해도 되지만,  
+더 간단하게는 RStuio 의 R Markdown 문서에서  
+단축키인 ' Ctrl + Alt + I '를 이용할 수도 있다.  
+- R Code Chunk 에서는 주석도 # 로 표현하는 등,  
+일반적인 R 의 함수와 기능들을 모두 이용 가능
+```{r rtest1}
+a = -5:5
+b = a^3
+c = data.frame(a,b)
+
+library(ggplot2)
+
+ggplot(data = c, aes(x=a, y=b)) +
+  geom_point() +
+  geom_line(color="BLUE")
+```
+
+No | 옵션명 | 설 명
+- | :--: | -------
+1 | eval | FALSE 이면 코드는 실행되지 않으나, 코드는 출력된다.  (코드가 실행되지 않았으므로, 결과도 출력되지 않음)  * 예시 코드용으로 유용
+2 | include | FALSE 이면 코드가 실행은 되지만, 코드와 결과가 모두 출력되지 않는다.  * 보고서를 어수선하게 하지 않는 setup code 용으로 유용
+3 | echo | FALSE 이면 코드가 실행되지만, 코드는 출력되지 않고 결과만 출력된다.  * 코드 없이 결과물만 보이기를 원하는 보고서 등에 유용
+4 | results | "hide"이면 print 결과물들이 출력되지 않는다.
+5 | fig.show | "hide"이면 plot 결과물들이 출력되지 않는다.  * ggplot2 결과물도 포함됨을 확인
+6 | message | False 이면 R 코드 실행시의 메세지가 표시되지 않는다.
+7 | warning | False 이면 R 코드 실행시의 경고문이 표시되지 않는다.
+
+
+### kntir 패키지의 kable() 함수
+- kable() 함수는  
+함수 안에 표에 표시하기를 원하는 데이터 명을 기재하기만 하면,  
+별도의 제목 행 구분 등의 작업 없이도 간단히 표를 그릴 수 있다.
+
+* caption 옵션 : 표의 제목 지정
+* align 옵션 : 열 별 정렬.  
+               (가운데 정렬은 'c', 죄측정렬은 'l', 우측정렬은 'r'로 설정)
+* results 옵션 : 코드 청크의 결과물을 markdown 으로 바꿀지 여부를 결정하는 것
+
+```{r results = "asis"}
+library(knitr)
+
+kable(head(iris, 10),
+      caption = "knitr 패키지의 kable() 함수를 이용한 표 그리기",
+      align=c("c", "l", "l", "l", "r"))
+```
+
+
+## 3. 동적인 표 : DT 패키지의 datatable() 함수
+
+DT 패키지는  
+DataTables 자바스크립트 라이브러리를 통해 interactive 한 표를 만드는 기능을 제공한다. 
+
+이 DT 의 완전한 기능은 HTML 기반의 출력물에서만 제공됨에 유의해야 한다. 
+
+데이터의 개수(행)가 많은 경우, datatable() 함수는  
+default 로 10 개의 항목만 보여주며,  
+나머지는 왼쪽 상단의 "Show 10 Entries"나 오른쪽 하단의 페이지를 넘겨서 조회할 수 있다.  
+
+또한, datatable() 함수 내의 옵션으로,  
+caption(제목), filter(필터의 위치), class(CSS 클래스) 등을 설정하여  
+표를 더 예쁘게 그릴 수 있는데,  
+이에 대해서는 R 의 도움말 등을 참조하면 된다.  
+
+
+#### **사용 예 :**
+
+```{r}
+# install.packages("DT")
+library(DT)
+
+datatable(iris,
+          caption = "DT 패키지를 활용한 표",
+          filter = "top")
+
+```
+
+
+
+
+
+
+
+

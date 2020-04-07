@@ -1,0 +1,60 @@
+---
+title: "2020_12_30_자바기초"
+author: "yksoon"
+date: '2020 4 7 '
+output: html_document
+---
+## it 개발자 규칙
+
+1. 폴더명/파일명 -> 영문 사용
+2. eclipse 설치 -> c:/
+3. 설치  ooo.exe -> 관리자 권한으로 설치
+
+java.exe - 코딩 가능  
+javac.exe - 컴퓨터가 알수있도록 컴파일러  
+
+src - source 소스의 약자  
+bin - binary 바이너리의 약자  
+자바 설치시 환경변수 셋팅  
+
+package 는 도메인의 역순 -> ex) cafe.naver.com = com.naver.cafe  
+
+### 클래스
+첫글자는 영문 대문자  
+
+ctrl + space => 자동 완성  
+단일 주석 =>  //  
+다중 주석 =>  /*  
+	       *  
+	       */  
+에러코드 발생시  
+Syntax error => 문법에러  
+
+### 자바프로젝트 
+1. 패키지 안에는 하나 이상의 클래스가 있어야 한다. public class 클래스명
+2. 한개의 파일 내부에는 반드시 main이 *한개만* 있어야한다. 
+
+public static void main(String[] args) {  
+	}  
+
+### 변수 => 특정 데이터 (같은 데이터의 형태를 한번에 한개의 데이터만 저장됨)
+- 정수 int(4byte), byte(1byte), short(2byte), long(8byte) 
+- 실수(소수점) float-4바이트, double-8바이트
+- 문자 String"OOO"  => 기본타입이 아닌 class 타입임
+- 단일문자(unicode) char'O'  => 한글자
+- 논리값 boolean
+- 변수 선언할때 =>  데이터타입(int, String 등등) 변수명;  ex) int a;  
+				      a = 10;  
+				  int b = 25;  
+				  int c = a + b;  
+숫자에 문자열을 더할수 있다. 단 덧셈 선언시 String 삽입  
+
+배열 => 한번에 여러개의 동일 데이터 저장, 한번 인덱스를 설정하면 수정 불가  
+ ㄴ데이터타입[ ] 변수명 = {A, B, C ...};  
+ ex)	int[] a = new int[3];  
+    	int[] a = {1, 2, 4, 6, 7};  
+
+클래스 => 한번에 다중 데이터 저장  
+
+
+연산 (사칙) => + - * / (몫) %(나머지)  
