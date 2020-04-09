@@ -1,0 +1,40 @@
+---
+title: "flexdashboard"
+author: "yksoon"
+date: '2020 4 8 '
+output: html_document
+---
+
+## 1. flexdashboard
+
+- flexdashboard를 이용하면
+  R로 유연하고, 매력적이며, 쌍방향의 대시보드를 쉽게 만들 수 있음.  
+
+## 2. flexdashboard 설치
+
+install.packages("flexdashboard")  
+library(flexdashboard)  
+
+
+- 애플리케이션에서 사용할 라이브러리는 setup 청크에 설치 및 불러온다.  
+
+- 헤더부분 (들여쓰기 수정하면 안됨)  
+   title: "2020_04_08_flexdashboard"  
+   output: 
+   &nbsp;flexdashboard::flex_dashboard:  
+   &nbsp;&nbsp;  orientation: columns  
+   &nbsp;&nbsp;  vertical_layout: fill  
+
+- Column 은 대소문자 구분 해야 함
+
+- orientation: rows 로 변경시 차트 형태로 됨
+
+- orientation: columns, vertical_layout: scroll 로 변경시 스크롤바를 생성할 수 있음.
+
+- Column {.tabset .tabset-fade}  컬럼에 .tabset 옵션을 주면 탭으로 전환할 수 있다.
+
+## 3. flexdashboard 의 valueBox() 로 아이콘 설정
+
+대시보드를 구성할 때, 한개 또는 두 개의 값을 강조해서 그림 또는 아이콘과 같이  
+보여주고 싶을때가 있는데,  
+이 경우 flexdashboard 에서는 **valuseBox() 함수**를 이용해서

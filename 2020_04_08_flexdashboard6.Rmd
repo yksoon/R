@@ -1,0 +1,73 @@
+---
+title: "Multiple Page"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    source_code: embed
+    navbar:
+      - { title: "About", href: "https://example.com/about", align: right}
+      - { icon: "fa-pencil", href: "https://www.naver.com", align: right}
+---
+
+Page 1
+===============================================================
+
+This is an example
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(knitr)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Gauge ex1. Cintact Rate
+
+```{r}
+gauge(45, min = 0, max = 100, symbol = '%',
+      sectors = gaugeSectors(success = c(80, 100),
+                             warning = c(40, 79),
+                             danger = c(0, 39)
+))
+```
+
+### Gauge ex2. Average Rating
+
+```{r}
+rating = 42
+gauge(rating, 0, 50, label = 'Test', gaugeSectors(
+  success = c(41, 50), warning = c(21, 40), danger = c(0, 20)
+))
+```
+
+### 텍스트 어노테이션(Text Annotation)
+
+아무거나 막 씁니다.  
+
+배고프구요..  
+집에 가고싶어요
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+
+Page 2 {data-orientation=rowx}
+======================================================
+
+### ggplot2 chart1
+
+```{r}
+ggplot(data = mtcars, aes(x=hp, y=mpg, color = as.factor(cyl))) +
+  geom_point() +
+  theme(legend.position = "blank")
+```
+
+### Chart C
+
+```{r}
+
+```
+

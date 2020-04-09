@@ -1,0 +1,221 @@
+---
+title: "서점의 고객 데이터에 대한 가상 사례"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    source_code: embed
+    
+---
+
+구매수량
+==============================================
+
+```{r setup, include=FALSE}
+
+library(flexdashboard)
+library(ggplot2)
+library(knitr)
+
+```
+
+Column
+-----------------------------------------------------------------------
+
+### 구매일수에 따른 구매서적수량과 회귀선 차트 {data-height=50}
+
+- 가설 1  
+  보조선인 회귀선을 본다면 최근성이 낮을수록,  
+  즉 구매한지 오래되었을 수록 구매한 서적의 수가 많음  
+
+### Chart
+
+```{r}
+
+cs0 <- read.csv("./data/cust_seg_smpl_280122.csv",header=T)
+cs1 <- cs0
+
+names(cs1) <- c("cust_name", "sex", "age", "location", "days_purchase",
+                "recency", "num_books", "amt_books", "amt_non_book",
+                "amt_total", "interest_genre", "num_genre",
+                "membership_period", "sms_optin" )
+
+plot(x = cs1$recency, y = cs1$num_books)
+
+abline(lm(cs1$num_books~cs1$recency), col = "blue", lwd=1.5)
+
+```
+
+
+### 결론 {data-height=30}
+
+구매기간이 오래됐다고 구매서적이 많은 것은 아니다. 즉 관계가 없다.
+
+Column
+-----------------------------------------------------------------------
+
+### 구매 서적 수량에 따른 서적 구매 금액 차트와 회귀선 {data-height=50}
+
+- 가설 2  
+  구매한 책의 수가 많을수록 구매금액이 큼  
+  주로 비싼 책을 샀는지를 파악하기 위해 평균금액을 계산  
+
+### Chart
+
+```{r}
+cs1$amt_books <- as.numeric(gsub(",", "", cs1$amt_books))
+cs1$amt_non_book <- as.numeric(gsub(",", "", cs1$amt_non_book))
+cs1$amt_total <- as.numeric(gsub(",", "", cs1$amt_total))
+
+plot(x = cs1$num_books, y = cs1$amt_books)
+
+abline(lm(cs1$amt_books~cs1$num_books), col = "blue", lwd=1.5)
+```
+
+### 결론 {data-height=30}
+
+구매한 책의 수가 많으면 구매 금액이 큼.  
+하지만 이 지표에서는 주로 비싼책을 샀는지 판단하기 어려움.
+
+성별
+================================================================
+
+Column
+-----------------------------------------------------------------------
+
+### 남녀 구분 구매 서적 수량에 따른 구매서적 평균 금액 {data-height=30}
+
+
+- 성별을 구분해서 특성 차이 비교  
+
+### Chart
+
+```{r}
+
+cs1$amt_books <- as.numeric(gsub(",",
+                                 "",
+                                 as.character(cs1$amt_books))
+                            )
+
+cs1$amt_non_book <- as.numeric(gsub(",",
+                                 "",
+                                 as.character(cs1$amt_non_book)))
+
+cs1$unitprice_book <- cs1$amt_books / cs1$num_books
+
+plot(jitter(cs1$num_books),
+     jitter(cs1$unitprice_book),
+     pch=19,
+     cex=0.7,
+     col = ifelse(cs1$sex=='여', "pink", "lightblue"),
+     ylim = c(0, max(cs1$unitprice_book)*1.05),
+     sub="pink: female  blue: male")
+
+abline(lm(cs1$unitprice_book~cs1$num_books),
+       col="blue",
+       lwd=2, lty=2)
+
+abline(h=median(cs1$unitprice_book),
+       col="darkgray")
+
+```
+
+Column
+-----------------------------------------------------------------------
+
+### 왼쪽 차트에 따른 크기 비교
+
+```{r}
+
+plot(jitter(cs1$num_books),
+     jitter(cs1$unitprice_book),
+     pch=19,
+     cex=4*cs1$amt_non_book/max(cs1$amt_non_book),
+     col = ifelse(cs1$sex=='여', "pink", "lightblue"),
+     ylim = c(0, max(cs1$unitprice_book)*1.05),
+     sub="size: 서적 이외 상품 구매액")
+
+abline(lm(cs1$unitprice_book~cs1$num_books),
+       col="blue",
+       lwd=2, lty=2)
+
+abline(h=median(cs1$unitprice_book),
+       col="darkgray")
+
+```
+
+
+Column
+-----------------------------------------------------------------------
+
+### 구매 서적 금액에 따른 비 서적 구매 금액과 분포도
+
+```{r}
+
+library(ggplot2)
+
+ggplot(data = cs1,
+       aes(x = amt_books,
+           y = amt_non_book)) +
+  geom_point(colour = "orange", size = 4) + geom_vline(xintercept = mean(cs1$amt_books)) + geom_hline(yintercept = mean(cs1$amt_non_book))
+
+```
+
+### 결론 {data-height=50}
+남성이 여성보다 평균 구매 서적 금액이 크다고 나타난다. 여성은 구매 서적이 많지만 평균 구매액이 크지 않으므로  
+남성이 여성보다 비싼 책을 구매한다는 경향을 알 수 있다.
+
+분포
+===========================================================
+
+Column
+-----------------------------------------------------------------------
+
+### 군집별 고객 분포표 {data-height=50}
+
+- 군집분석을 활용한 고객세분화
+  - 장르에 따른 고객들의 분포 분석
+  - 각 고객의 소속 집단이 어디인가에 따라 색상 표시
+
+### Chart
+
+```{r}
+
+cs2 <- cs1[, names(cs1) %in% c("days_purchase",
+                               "recency", "num_books", "amt_books", 
+                               "unitprice_book", "amt_non_book",
+                               "num_genre", "membership_period")]
+
+kmml <- kmeans(cs2, 3)
+
+cols <- c("red", "green", "blue")
+
+barplot(table(kmml$cluster),
+        names.arg = names(table(kmml$cluster)),
+        col = cols,
+        main = "군집별 고객수 분포포")
+
+```
+
+
+Column
+-----------------------------------------------------------------------
+
+### 각 고객의 소속 집단이 어디인가에 따른 산포도 {data-height=30}
+
+- 일 구매량이 많을수록 장르를 많이 따지는지 확인
+
+### Chart
+
+```{r}
+
+ggplot(data = cs2,
+       aes(x = days_purchase,
+           y = num_genre))+ geom_jitter(col=cols[kmml$cluster]) + geom_smooth(aes(x = days_purchase, y = num_genre))
+
+```
+
+### 결론 {data-height=50}
+
+구매를 많이 안하는 사람일수록 장르를 따진다  
+구매를 많이 하는 사람일수록 장르는 보편화 되어있다
+

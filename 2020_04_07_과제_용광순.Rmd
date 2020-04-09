@@ -1,0 +1,46 @@
+---
+title: "서점의 고객 데이터에 대한 가상 사례"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    source_code: embed
+    navbar:
+      - { title: "About", href: "https://example.com/about", align: right}
+      - { icon: "fa-pencil", href: "https://www.naver.com", align: right}
+---
+
+Page 1
+==============================================
+
+가설 1   
+보조선인 회귀선을 본다면 최근성이 낮을수록,  
+즉 구매한지 오래되었을 수록 구매한 서적의 수가 많음 
+
+```{r setup, include=FALSE}
+
+library(flexdashboard)
+library(ggplot2)
+library(knitr)
+
+```
+
+Column
+-----------------------------------------------------------------------
+
+### Chart 1
+
+```{r}
+
+cs0 <- read.csv("./data/cust_seg_smpl_280122.csv",header=T,encoding = "UTF-8")
+cs1 <- cs0
+View(cs1)
+names(cs1) <- c("cust_name", "sex", "age", "location", "days_purchase",
+                "recency", "num_books", "amt_books", "amt_non_book",
+                "amt_total", "interest_genre", "num_genre",
+                "membership_period", "sms_optin" )
+
+plot(x = cs1$recency, y = cs1$num_books)
+
+abline(lm(cs1$num_books~cs1$recency), col = "blue", lwd=1.5)
+
+```
